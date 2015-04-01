@@ -7,6 +7,10 @@
         <attr name="typeface" />
     </declare-styleable>
 
+    <declare-styleable name="com.neopixl.pixlui.components.textview.EllipsizingTextView">
+        <attr name="android:maxLines" />
+    </declare-styleable>
+
     <declare-styleable name="com.neopixl.pixlui.components.button.Button">
         <attr name="typeface" />
     </declare-styleable>

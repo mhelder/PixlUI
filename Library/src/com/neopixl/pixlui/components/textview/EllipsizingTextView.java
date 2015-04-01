@@ -14,6 +14,8 @@ import android.text.TextUtils.TruncateAt;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
+import com.neopixl.pixlui.R;
+
 public class EllipsizingTextView extends TextView {
 	private static final String ELLIPSIS = "\u2026";
 	private static final Pattern DEFAULT_END_PUNCTUATION = Pattern.compile("[\\.,\u2026;:\\s]*$", Pattern.DOTALL);
@@ -36,20 +38,29 @@ public class EllipsizingTextView extends TextView {
 	private Pattern endPunctuationPattern;
 
 	public EllipsizingTextView(Context context) {
-		this(context, null);
+		super(context);
+        initAttributes(context, null);
 	}
 
 	public EllipsizingTextView(Context context, AttributeSet attrs) {
-		this(context, attrs, 0);
+		super(context, attrs);
+        initAttributes(context, attrs);
 	}
 
 	public EllipsizingTextView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
-		super.setEllipsize(null);
-		TypedArray a = context.obtainStyledAttributes(attrs, new int[] { android.R.attr.maxLines });
-		setMaxLines(a.getInt(0, Integer.MAX_VALUE));
-		setEndPunctuationPattern(DEFAULT_END_PUNCTUATION);
+		initAttributes(context, attrs);
 	}
+
+    private void initAttributes(Context context, AttributeSet attrs) {
+        super.setEllipsize(null);
+
+        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.com_neopixl_pixlui_components_textview_EllipsizingTextView);
+        final int maxLines = a.getInt(R.styleable.com_neopixl_pixlui_components_textview_EllipsizingTextView_android_maxLines, Integer.MAX_VALUE);
+        setMaxLines(maxLines);
+        setEndPunctuationPattern(DEFAULT_END_PUNCTUATION);
+        a.recycle();
+    }
 
 	public void setEndPunctuationPattern(Pattern pattern) {
 		this.endPunctuationPattern = pattern;
