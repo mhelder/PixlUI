@@ -33,4 +33,12 @@
         <attr name="android:textAllCaps" />
     </declare-styleable>
 
+    <declare-styleable name="com.neopixl.pixlui.components.imageview.ImageView">
+        <attr name="android:alpha" />
+    </declare-styleable>
+
+    <declare-styleable name="com.neopixl.pixlui.components.relativelayout.RelativeLayout">
+        <attr name="android:alpha" />
+    </declare-styleable>
+
 </resources>

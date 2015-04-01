@@ -19,6 +19,15 @@ public class PixlUIUtils {
         }
     }
 
+    public static void setAlpha(Context ctx, AlphaView view, int[] attrs, int alphaId, AttributeSet set, int defStyleAttr, int defStyleRes) {
+        // Retrieve style attributes.
+        TypedArray a = ctx.obtainStyledAttributes(set, attrs, defStyleAttr, defStyleRes);
+        float alpha = a.getFloat(alphaId, 1f);
+        a.recycle();
+
+        view.setAlpha(alpha);
+    }
+
     public static void setAllCaps(Context ctx, CapitalizableView view, int[] attrs, int allCapsId, AttributeSet set, int defStyleAttr, int defStyleRes) {
         // Retrieve style attributes.
         TypedArray a = ctx.obtainStyledAttributes(set, attrs, defStyleAttr, defStyleRes);

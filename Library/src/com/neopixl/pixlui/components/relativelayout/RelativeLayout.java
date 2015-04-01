@@ -18,129 +18,93 @@ permissions and limitations under the License.
 package com.neopixl.pixlui.components.relativelayout;
 
 
-import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Canvas;
+import android.os.Build;
 import android.util.AttributeSet;
+
+import com.neopixl.pixlui.R;
+import com.neopixl.pixlui.intern.AlphaView;
+import com.neopixl.pixlui.intern.PixlUIUtils;
 
 /**
  * Add alpha method for old api
  * @author Olivier Demolliens. @odemolliens
  * Dev with Neopixl
  */
-public class RelativeLayout extends android.widget.RelativeLayout {
-
-	/**
-	 * XML Attribute
-	 */
-	private static final String RELATIVE_LAYOUT_OS_ATTRIBUTE_TEXT_ALPHA = "alpha";
-
-	/**
-	 * State
-	 */
-	private boolean mOldDeviceTextAlpha;
+public class RelativeLayout extends android.widget.RelativeLayout implements AlphaView {
 
 	/**
 	 * Attribute value
-	 * @param context
 	 */
 	private float mAlpha = 1;
 
 	public RelativeLayout(Context context) {
 		super(context);
-		editTextVersion();
+		initAttributes(context, null, 0, 0);
 	}
 
 	public RelativeLayout(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		editTextVersion();
-		if (isOldDeviceTextAlpha()) {
-			setAlpha(context, attrs);
-		}
+		initAttributes(context, attrs, 0, 0);
 	}
 
-	public RelativeLayout(Context context, AttributeSet attrs, int defStyle) {
-		super(context, attrs, defStyle);
-		editTextVersion();
-		if (isOldDeviceTextAlpha()) {
-			setAlpha(context, attrs);
-		}
+	public RelativeLayout(Context context, AttributeSet attrs, int defStyleAttr) {
+		super(context, attrs, defStyleAttr);
+		initAttributes(context, attrs, defStyleAttr, 0);
 	}
 
-	/**
-	 * Define what version of code we need to use
-	 */
-	private void editTextVersion() {
-		if (android.os.Build.VERSION.SDK_INT < 11) {
-			setOldDeviceTextAlpha(true);
-		} else {
-			setOldDeviceTextAlpha(false);
-		}
-	}
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP) public RelativeLayout(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+        super(context, attrs, defStyleAttr, defStyleRes);
+        initAttributes(context, attrs, defStyleAttr, defStyleRes);
+    }
 
-	/**
-	 * XML methods
-	 *
-	 * @param ctx
-	 * @param attrs
-	 */
-	private void setAlpha(Context ctx, AttributeSet attrs) {
-		
-		if(!isInEditMode()){
-			int indexSize = attrs.getAttributeCount();
+    private void initAttributes(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+        setAlpha(context, attrs, defStyleAttr, defStyleRes);
+    }
 
-			float xmlAlpha = 1;
+    private void setAlpha(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+        PixlUIUtils.setAlpha(context, this,
+                R.styleable.com_neopixl_pixlui_components_relativelayout_RelativeLayout,
+                R.styleable.com_neopixl_pixlui_components_relativelayout_RelativeLayout_android_alpha,
+                attrs, defStyleAttr, defStyleRes);
+    }
 
-			for (int i = 0; i < indexSize; i++) {
-				if (attrs.getAttributeName(i).equals(
-						RELATIVE_LAYOUT_OS_ATTRIBUTE_TEXT_ALPHA)) {
-					xmlAlpha = attrs.getAttributeFloatValue(i, 1);
-					break;
-				}
-			}
-			if (xmlAlpha != 1) {
-				setAlpha(xmlAlpha);
-			}
-		}
-	}
+    /**
+     * Enable alpha for old api
+     * @param alpha
+     */
+    @Override public void setAlpha(float alpha) {
+        if (android.os.Build.VERSION.SDK_INT < 11) {
+            mAlpha = alpha;
+        } else{
+            super.setAlpha(alpha);
+        }
+    }
 
-	/**
-	 * Enable apha for old api
-	 * @param alpha
-	 */
-	@SuppressLint("NewApi")
-	@Override
-	public void setAlpha(float alpha) {
-		if (this.isOldDeviceTextAlpha()) {
-			set_Alpha(alpha);
-		}else{
-			super.setAlpha(alpha);
-		}
-	}
+    /**
+     * Enable alpha for old api
+     * @param alpha
+     */
+    @Deprecated @Override public void setAlpha(int alpha) {
+        if (android.os.Build.VERSION.SDK_INT < 11) {
+            mAlpha = alpha;
+        } else{
+            super.setAlpha(alpha);
+        }
+    }
 
-	@Override
-	public void onDraw(Canvas canvas){
-		if(mAlpha!=1){
-			int drawedAlpha = (int) (mAlpha * 255);
-			canvas.saveLayerAlpha(0, 0, canvas.getWidth(), canvas.getHeight(), drawedAlpha, Canvas.HAS_ALPHA_LAYER_SAVE_FLAG);
-		}
-		super.onDraw(canvas);
-	}
+    @Override public float getAlpha() {
+        return mAlpha;
+    }
 
-	public boolean isOldDeviceTextAlpha() {
-		return mOldDeviceTextAlpha;
-	}
-
-	public void setOldDeviceTextAlpha(boolean mOldDeviceTextAlpha) {
-		this.mOldDeviceTextAlpha = mOldDeviceTextAlpha;
-	}
-
-	public float get_Alpha() {
-		return mAlpha;
-	}
-
-	public void set_Alpha(float mAlpha) {
-		this.mAlpha = mAlpha;
-	}
+    @Override public void onDraw(Canvas canvas) {
+        if (mAlpha != 1) {
+            int drawedAlpha = (int) (mAlpha * 255);
+            canvas.saveLayerAlpha(0, 0, canvas.getWidth(), canvas.getHeight(), drawedAlpha, Canvas.HAS_ALPHA_LAYER_SAVE_FLAG);
+        }
+        super.onDraw(canvas);
+    }
 
 }
