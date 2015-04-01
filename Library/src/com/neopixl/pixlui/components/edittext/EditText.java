@@ -12,11 +12,12 @@ import com.neopixl.pixlui.intern.PixlUIUtils;
 public class EditText extends android.widget.EditText implements FontStyleView {
 
 	public EditText(Context context) {
-        super(context, null);
+        super(context);
 	}
 
 	public EditText(Context context, AttributeSet attrs) {
 		super(context, attrs);
+        setCustomFont(context, attrs, 0);
 	}
 
 	public EditText(Context context, AttributeSet attrs, int defStyle) {
@@ -34,7 +35,7 @@ public class EditText extends android.widget.EditText implements FontStyleView {
 	/**
 	 * Use this method to set a custom font in your code (/assets/fonts/)
 	 * @param ctx
-	 * @param Font Name, don't forget to add file extension
+	 * @param font Name, don't forget to add file extension
 	 * @return
 	 */
 	public boolean setCustomFont(Context ctx, String font) {

@@ -1,10 +1,10 @@
 package com.neopixl.pixlui.components.textview;
 
-import com.neopixl.pixlui.R;
-
 import android.content.Context;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
+
+import com.neopixl.pixlui.R;
 import com.neopixl.pixlui.intern.FontStyleView;
 import com.neopixl.pixlui.intern.PixlUIUtils;
 
@@ -17,11 +17,12 @@ import com.neopixl.pixlui.intern.PixlUIUtils;
 public class TextView extends EllipsizingTextView implements FontStyleView {
 
     public TextView(Context context) {
-        this(context, null);
+        super(context);
     }
 
     public TextView(Context context, AttributeSet attrs) {
-        this(context, attrs, 0);
+        super(context, attrs);
+        setCustomFont(context, attrs, 0);
     }
 
     public TextView(Context context, AttributeSet attrs, int defStyle) {
@@ -39,7 +40,7 @@ public class TextView extends EllipsizingTextView implements FontStyleView {
     /**
      * Use this method to set a custom font in your code (/assets/fonts/)
      * @param ctx
-     * @param Font Name, don't forget to add file extension
+     * @param font Font Name, don't forget to add file extension
      * @return
      */
     public boolean setCustomFont(Context ctx, String font) {
