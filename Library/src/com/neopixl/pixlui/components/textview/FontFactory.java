@@ -30,8 +30,9 @@ import android.util.Log;
  */
 public class FontFactory {
 	private static FontFactory instance;
-	private HashMap<String, Typeface> fontMap = new HashMap<String, Typeface>();
-	private Context context;
+
+	private final HashMap<String, Typeface> fontMap = new HashMap<String, Typeface>();
+	private final Context context;
 
 	private FontFactory(Context context) {
 		this.context = context.getApplicationContext();

@@ -20,12 +20,14 @@ package com.neopixl.pixlui.components.edittext;
 import java.util.List;
 
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.os.SystemClock;
 import android.provider.Settings;
 import android.text.Editable;
@@ -113,7 +115,7 @@ public class AutoCompleteEditText extends android.widget.AutoCompleteTextView im
 	public AutoCompleteEditText(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		editTextVersion();
-        setCustomFont(context, attrs, 0);
+        setCustomFont(context, attrs, 0, 0);
 		setDisableCopyAndPaste(context, attrs);
 		setCancelClipboard(context, attrs);
 		setAutoFocus(context,attrs);
@@ -122,10 +124,10 @@ public class AutoCompleteEditText extends android.widget.AutoCompleteTextView im
 		}
 	}
 
-	public AutoCompleteEditText(Context context, AttributeSet attrs, int defStyle) {
-		super(context, attrs, defStyle);
+	public AutoCompleteEditText(Context context, AttributeSet attrs, int defStyleAttr) {
+		super(context, attrs, defStyleAttr);
 		editTextVersion();
-        setCustomFont(context, attrs, defStyle);
+        setCustomFont(context, attrs, defStyleAttr, 0);
 		setDisableCopyAndPaste(context, attrs);
 		setCancelClipboard(context, attrs);
 		setAutoFocus(context,attrs);
@@ -134,7 +136,19 @@ public class AutoCompleteEditText extends android.widget.AutoCompleteTextView im
 		}
 	}
 
-	/**
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP) public AutoCompleteEditText(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+        super(context, attrs, defStyleAttr, defStyleRes);
+        editTextVersion();
+        setCustomFont(context, attrs, defStyleAttr, 0);
+        setDisableCopyAndPaste(context, attrs);
+        setCancelClipboard(context, attrs);
+        setAutoFocus(context,attrs);
+        if (isOldDeviceTextAllCaps()) {
+            setAllCaps(context, attrs);
+        }
+    }
+
+    /**
 	 * Define what version of code we need to use
 	 */
 	private void editTextVersion() {
@@ -159,11 +173,11 @@ public class AutoCompleteEditText extends android.widget.AutoCompleteTextView im
 		mCustomPassWordTransformation = false;
 	}
 
-    private void setCustomFont(Context ctx, AttributeSet attrs, int defStyle) {
+    private void setCustomFont(Context ctx, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         PixlUIUtils.setCustomFont(ctx, this,
                 R.styleable.com_neopixl_pixlui_components_edittext_AutoCompleteEditText,
                 R.styleable.com_neopixl_pixlui_components_edittext_AutoCompleteEditText_typeface,
-                attrs, defStyle);
+                attrs, defStyleAttr, defStyleRes);
     }
 
 	/**
