@@ -78,7 +78,7 @@ public class RelativeLayout extends android.widget.RelativeLayout implements Alp
     @Override public void setAlpha(float alpha) {
         if (android.os.Build.VERSION.SDK_INT < 11) {
             mAlpha = alpha;
-        } else{
+        } else {
             super.setAlpha(alpha);
         }
     }
@@ -88,11 +88,9 @@ public class RelativeLayout extends android.widget.RelativeLayout implements Alp
      * @param alpha
      */
     @Deprecated @Override public void setAlpha(int alpha) {
-        if (android.os.Build.VERSION.SDK_INT < 11) {
-            mAlpha = alpha;
-        } else{
-            super.setAlpha(alpha);
-        }
+        // there is no super.setAlpha(int), so we'll just propagate the call to setAlpha(float)
+        mAlpha = (alpha & 0xff) / 255f;
+        setAlpha(mAlpha);
     }
 
     @Override public float getAlpha() {

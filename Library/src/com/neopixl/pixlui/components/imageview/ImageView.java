@@ -79,7 +79,7 @@ public class ImageView extends android.widget.ImageView implements AlphaView {
 	@Override public void setAlpha(float alpha) {
 		if (android.os.Build.VERSION.SDK_INT < 11) {
 			mAlpha = alpha;
-		} else{
+		} else {
 			super.setAlpha(alpha);
 		}
 	}
@@ -88,14 +88,22 @@ public class ImageView extends android.widget.ImageView implements AlphaView {
         setAlpha(alpha);
     }
 
+    @Override public int getImageAlpha() {
+        if (android.os.Build.VERSION.SDK_INT < 11) {
+            return (int) (getAlpha() * 255);
+        } else {
+            return super.getImageAlpha();
+        }
+    }
+
     /**
 	 * Enable alpha for old api
 	 * @param alpha
 	 */
     @Deprecated @Override public void setAlpha(int alpha) {
 		if (android.os.Build.VERSION.SDK_INT < 11) {
-            mAlpha = alpha;
-		} else{
+            mAlpha = (alpha & 0xff) / 255f;
+		} else {
 			super.setAlpha(alpha);
 		}
 	}
