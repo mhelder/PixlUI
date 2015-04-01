@@ -19,4 +19,14 @@
         <attr name="typeface" />
     </declare-styleable>
 
+    <declare-styleable name="com.neopixl.pixlui.components.radiobutton.RadioButton">
+        <attr name="typeface" />
+        <attr name="android:textAllCaps" />
+    </declare-styleable>
+
+    <declare-styleable name="com.neopixl.pixlui.components.checkbox.CheckBox">
+        <attr name="typeface" />
+        <attr name="android:textAllCaps" />
+    </declare-styleable>
+
 </resources>

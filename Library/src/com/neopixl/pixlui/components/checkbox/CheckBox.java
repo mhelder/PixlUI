@@ -18,11 +18,15 @@ permissions and limitations under the License.
 package com.neopixl.pixlui.components.checkbox;
 
 import com.android.export.AllCapsTransformationMethod;
+import com.neopixl.pixlui.R;
 import com.neopixl.pixlui.components.textview.FontFactory;
+import com.neopixl.pixlui.intern.FontStyleView;
 import com.neopixl.pixlui.intern.PixlUIContants;
+import com.neopixl.pixlui.intern.PixlUIUtils;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
@@ -32,104 +36,45 @@ import android.util.AttributeSet;
  * 
  * @author Olivier Demolliens. @odemolliens Dev with Neopixl
  */
-public class CheckBox extends android.widget.CheckBox {
+public class CheckBox extends android.widget.CheckBox implements FontStyleView {
 
+    public CheckBox(Context context) {
+        super(context);
+    }
 
-	private static String BUTTON_ATTRIBUTE_FONT_NAME = "typeface";
-	private static final String BUTTON_OS_ATTRIBUTE_TEXT_ALL_CAPS = "textAllCaps";
-
-	/**
-	 * State
-	 */
-	private boolean mOldDeviceTextAllCaps;
+    public CheckBox(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        initAttributes(context, attrs, 0);
+    }
 
 	public CheckBox(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
-		checkBoxVersion();
-		setCustomFont(context, attrs);
-		if (isOldDeviceTextAllCaps()) {
-			setAllCaps(context, attrs);
-		}
+        initAttributes(context, attrs, defStyle);
 	}
 
-	public CheckBox(Context context, AttributeSet attrs) {
-		super(context, attrs);
-		checkBoxVersion();
-		setCustomFont(context, attrs);
-		if (isOldDeviceTextAllCaps()) {
-			setAllCaps(context, attrs);
-		}
-	}
+    private void initAttributes(Context context, AttributeSet attrs, int defStyle) {
+        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.com_neopixl_pixlui_components_checkbox_CheckBox);
+        final boolean allCaps = a.getBoolean(R.styleable.com_neopixl_pixlui_components_checkbox_CheckBox_android_textAllCaps, false);
+        a.recycle();
 
-	public CheckBox(Context context) {
-		super(context);
-		checkBoxVersion();
-	}
+        setAllCaps(allCaps);
+        setCustomFont(context, attrs, defStyle);
+    }
 
-	/**
-	 * Define what version of code we need to use
-	 */
-	private void checkBoxVersion() {
-		if (android.os.Build.VERSION.SDK_INT < 14) {
-			setOldDeviceTextAllCaps(true);
-		} else {
-			setOldDeviceTextAllCaps(false);
-		}
-	}
-
-	/**
-	 * XML methods
-	 * 
-	 * @param ctx
-	 * @param attrs
-	 */
-	private void setCustomFont(Context ctx, AttributeSet attrs) {
-		String typefaceName = attrs.getAttributeValue(
-				PixlUIContants.SCHEMA_URL, BUTTON_ATTRIBUTE_FONT_NAME);
-
-		if (typefaceName != null) {
-			setPaintFlags(this.getPaintFlags() | Paint.SUBPIXEL_TEXT_FLAG
-					| Paint.LINEAR_TEXT_FLAG);
-			setCustomFont(ctx, typefaceName);
-		}
-	}
-
-	/**
-	 * XML methods
-	 * 
-	 * @param ctx
-	 * @param attrs
-	 */
-	private void setAllCaps(Context ctx, AttributeSet attrs) {
-
-		if(!isInEditMode()){
-			int indexSize = attrs.getAttributeCount();
-
-			boolean allCaps = false;
-
-			for (int i = 0; i < indexSize; i++) {
-				if (attrs.getAttributeName(i).equals(
-						BUTTON_OS_ATTRIBUTE_TEXT_ALL_CAPS)) {
-					allCaps = attrs.getAttributeBooleanValue(i, false);
-					break;
-				}
-			}
-
-			if (allCaps) {
-				setAllCaps(allCaps);
-			}
-		}
-	}
+    private void setCustomFont(Context ctx, AttributeSet attrs, int defStyle) {
+        PixlUIUtils.setCustomFont(ctx, this,
+                R.styleable.com_neopixl_pixlui_components_textview_TextView,
+                R.styleable.com_neopixl_pixlui_components_textview_TextView_typeface,
+                attrs, defStyle);
+    }
 
 	/**
 	 * Use this method to uppercase all char in text.
 	 * 
 	 * @param allCaps
 	 */
-	@SuppressLint("NewApi")
-	@Override
-	public void setAllCaps(boolean allCaps) {
-		if (this.isOldDeviceTextAllCaps()) {
+	@Override public void setAllCaps(boolean allCaps) {
+		if (android.os.Build.VERSION.SDK_INT < 14) {
 			if (allCaps) {
 				setTransformationMethod(new AllCapsTransformationMethod(
 						getContext()));
@@ -145,7 +90,7 @@ public class CheckBox extends android.widget.CheckBox {
 	 * Use this method to set a custom font in your code (/assets/fonts/)
 	 * 
 	 * @param ctx
-	 * @param Font
+	 * @param font
 	 *            Name, don't forget to add file extension
 	 * @return
 	 */
@@ -158,14 +103,5 @@ public class CheckBox extends android.widget.CheckBox {
 			return false;
 		}
 	}
-
-	public boolean isOldDeviceTextAllCaps() {
-		return mOldDeviceTextAllCaps;
-	}
-
-	public void setOldDeviceTextAllCaps(boolean mOldDeviceTextAllCaps) {
-		this.mOldDeviceTextAllCaps = mOldDeviceTextAllCaps;
-	}
-
 
 }
