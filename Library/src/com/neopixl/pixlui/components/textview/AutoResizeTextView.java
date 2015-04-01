@@ -1,7 +1,9 @@
 package com.neopixl.pixlui.components.textview;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Paint;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 
@@ -32,7 +34,12 @@ public class AutoResizeTextView extends TextView {
 		initialize();
 	}
 
-	private void initialize() {
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP) public AutoResizeTextView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+        super(context, attrs, defStyleAttr, defStyleRes);
+        initialize();
+    }
+
+    private void initialize() {
 		mTestPaint = new Paint();
 		mTestPaint.set(this.getPaint());
 		defaultTextSize = getTextSize();

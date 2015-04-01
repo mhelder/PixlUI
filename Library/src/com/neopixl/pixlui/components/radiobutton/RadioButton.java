@@ -3,15 +3,18 @@ package com.neopixl.pixlui.components.radiobutton;
 import com.android.export.AllCapsTransformationMethod;
 import com.neopixl.pixlui.R;
 import com.neopixl.pixlui.components.textview.FontFactory;
+import com.neopixl.pixlui.intern.CapitalizableView;
 import com.neopixl.pixlui.intern.FontStyleView;
 import com.neopixl.pixlui.intern.PixlUIContants;
 import com.neopixl.pixlui.intern.PixlUIUtils;
 
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Paint;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.util.AttributeSet;
 
 /*
@@ -31,36 +34,45 @@ import android.util.AttributeSet;
 
  permissions and limitations under the License.
  */
-public class RadioButton extends android.widget.RadioButton implements FontStyleView {
+public class RadioButton extends android.widget.RadioButton implements FontStyleView, CapitalizableView {
 
 	public RadioButton(Context context) {
 		super(context);
+        initAttributes(context, null, 0, 0);
 	}
 
 	public RadioButton(Context context, AttributeSet attrs) {
 		super(context, attrs);
-        initAttributes(context, attrs, 0);
+        initAttributes(context, attrs, 0, 0);
 	}
 
-	public RadioButton(Context context, AttributeSet attrs, int defStyle) {
-		super(context, attrs, defStyle);
-		initAttributes(context, attrs, defStyle);
+	public RadioButton(Context context, AttributeSet attrs, int defStyleAttr) {
+		super(context, attrs, defStyleAttr);
+		initAttributes(context, attrs, defStyleAttr, 0);
 	}
 
-    private void initAttributes(Context context, AttributeSet attrs, int defStyle) {
-        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.com_neopixl_pixlui_components_radiobutton_RadioButton);
-        final boolean allCaps = a.getBoolean(R.styleable.com_neopixl_pixlui_components_radiobutton_RadioButton_android_textAllCaps, false);
-        a.recycle();
-
-        setAllCaps(allCaps);
-        setCustomFont(context, attrs, defStyle);
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP) public RadioButton(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+        super(context, attrs, defStyleAttr, defStyleRes);
+        initAttributes(context, attrs, defStyleAttr, defStyleRes);
     }
 
-    private void setCustomFont(Context ctx, AttributeSet attrs, int defStyle) {
-        PixlUIUtils.setCustomFont(ctx, this,
-                R.styleable.com_neopixl_pixlui_components_textview_TextView,
-                R.styleable.com_neopixl_pixlui_components_textview_TextView_typeface,
-                attrs, defStyle);
+    private void initAttributes(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+        setAllCaps(context, attrs, defStyleAttr, defStyleRes);
+        setCustomFont(context, attrs, defStyleAttr, defStyleRes);
+    }
+
+    private void setAllCaps(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+        PixlUIUtils.setAllCaps(context, this,
+                R.styleable.com_neopixl_pixlui_components_radiobutton_RadioButton,
+                R.styleable.com_neopixl_pixlui_components_radiobutton_RadioButton_android_textAllCaps,
+                attrs, defStyleAttr, defStyleRes);
+    }
+
+    private void setCustomFont(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+        PixlUIUtils.setCustomFont(context, this,
+                R.styleable.com_neopixl_pixlui_components_radiobutton_RadioButton,
+                R.styleable.com_neopixl_pixlui_components_radiobutton_RadioButton_typeface,
+                attrs, defStyleAttr, defStyleRes);
     }
 
 	/**

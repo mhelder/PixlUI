@@ -1,7 +1,9 @@
 package com.neopixl.pixlui.components.button;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.util.AttributeSet;
 
 import com.neopixl.pixlui.R;
@@ -13,23 +15,33 @@ public class Button extends android.widget.Button implements FontStyleView {
 
 	public Button(Context context) {
 		super(context);
+        initAttributes(context, null, 0, 0);
 	}
 
 	public Button(Context context, AttributeSet attrs) {
 		super(context, attrs);
-        setCustomFont(context, attrs, 0);
+        initAttributes(context, attrs, 0, 0);
 	}
 
-	public Button(Context context, AttributeSet attrs, int defStyle) {
-		super(context, attrs, defStyle);
-        setCustomFont(context, attrs, defStyle);
+	public Button(Context context, AttributeSet attrs, int defStyleAttr) {
+		super(context, attrs, defStyleAttr);
+        initAttributes(context, attrs, defStyleAttr, 0);
 	}
 
-	private void setCustomFont(Context ctx, AttributeSet attrs, int defStyle) {
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP) public Button(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+        super(context, attrs, defStyleAttr, defStyleRes);
+        initAttributes(context, attrs, defStyleAttr, defStyleRes);
+    }
+
+    private void initAttributes(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+        setCustomFont(context, attrs, defStyleAttr, defStyleRes);
+    }
+
+    private void setCustomFont(Context ctx, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         PixlUIUtils.setCustomFont(ctx, this,
                 R.styleable.com_neopixl_pixlui_components_button_Button,
                 R.styleable.com_neopixl_pixlui_components_button_Button_typeface,
-                attrs, defStyle);
+                attrs, defStyleAttr, defStyleRes);
 	}
 
 	/**

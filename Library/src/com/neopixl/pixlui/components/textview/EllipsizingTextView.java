@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
+import android.os.Build;
 import android.text.Layout;
 import android.text.Layout.Alignment;
 import android.text.StaticLayout;
@@ -39,23 +41,28 @@ public class EllipsizingTextView extends TextView {
 
 	public EllipsizingTextView(Context context) {
 		super(context);
-        initAttributes(context, null);
+        initAttributes(context, null, 0, 0);
 	}
 
 	public EllipsizingTextView(Context context, AttributeSet attrs) {
 		super(context, attrs);
-        initAttributes(context, attrs);
+        initAttributes(context, attrs, 0, 0);
 	}
 
-	public EllipsizingTextView(Context context, AttributeSet attrs, int defStyle) {
-		super(context, attrs, defStyle);
-		initAttributes(context, attrs);
+	public EllipsizingTextView(Context context, AttributeSet attrs, int defStyleAttr) {
+		super(context, attrs, defStyleAttr);
+		initAttributes(context, attrs, defStyleAttr, 0);
 	}
 
-    private void initAttributes(Context context, AttributeSet attrs) {
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP) public EllipsizingTextView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+        super(context, attrs, defStyleAttr, defStyleRes);
+        initAttributes(context, attrs, defStyleAttr, defStyleRes);
+    }
+
+    private void initAttributes(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super.setEllipsize(null);
 
-        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.com_neopixl_pixlui_components_textview_EllipsizingTextView);
+        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.com_neopixl_pixlui_components_textview_EllipsizingTextView, defStyleAttr, defStyleRes);
         final int maxLines = a.getInt(R.styleable.com_neopixl_pixlui_components_textview_EllipsizingTextView_android_maxLines, Integer.MAX_VALUE);
         setMaxLines(maxLines);
         setEndPunctuationPattern(DEFAULT_END_PUNCTUATION);

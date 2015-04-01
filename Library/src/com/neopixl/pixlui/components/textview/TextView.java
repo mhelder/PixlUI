@@ -1,7 +1,9 @@
 package com.neopixl.pixlui.components.textview;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.util.AttributeSet;
 
 import com.neopixl.pixlui.R;
@@ -18,23 +20,33 @@ public class TextView extends EllipsizingTextView implements FontStyleView {
 
     public TextView(Context context) {
         super(context);
+        initAttributes(context, null, 0, 0);
     }
 
     public TextView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        setCustomFont(context, attrs, 0);
+        initAttributes(context, attrs, 0, 0);
     }
 
-    public TextView(Context context, AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
-        setCustomFont(context, attrs, defStyle);
+    public TextView(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+        initAttributes(context, attrs, defStyleAttr, 0);
     }
 
-    private void setCustomFont(Context ctx, AttributeSet attrs, int defStyle) {
-        PixlUIUtils.setCustomFont(ctx, this,
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP) public TextView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+        super(context, attrs, defStyleAttr, defStyleRes);
+        initAttributes(context, attrs, defStyleAttr, defStyleRes);
+    }
+
+    private void initAttributes(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+        setCustomFont(context, attrs, defStyleAttr, defStyleRes);
+    }
+
+    private void setCustomFont(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+        PixlUIUtils.setCustomFont(context, this,
                 R.styleable.com_neopixl_pixlui_components_textview_TextView,
                 R.styleable.com_neopixl_pixlui_components_textview_TextView_typeface,
-                attrs, defStyle);
+                attrs, defStyleAttr, defStyleRes);
     }
 
     /**

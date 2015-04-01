@@ -20,15 +20,18 @@ package com.neopixl.pixlui.components.checkbox;
 import com.android.export.AllCapsTransformationMethod;
 import com.neopixl.pixlui.R;
 import com.neopixl.pixlui.components.textview.FontFactory;
+import com.neopixl.pixlui.intern.CapitalizableView;
 import com.neopixl.pixlui.intern.FontStyleView;
 import com.neopixl.pixlui.intern.PixlUIContants;
 import com.neopixl.pixlui.intern.PixlUIUtils;
 
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Paint;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.util.AttributeSet;
 
 /**
@@ -36,36 +39,45 @@ import android.util.AttributeSet;
  * 
  * @author Olivier Demolliens. @odemolliens Dev with Neopixl
  */
-public class CheckBox extends android.widget.CheckBox implements FontStyleView {
+public class CheckBox extends android.widget.CheckBox implements FontStyleView, CapitalizableView {
 
     public CheckBox(Context context) {
         super(context);
+        initAttributes(context, null, 0, 0);
     }
 
     public CheckBox(Context context, AttributeSet attrs) {
         super(context, attrs);
-        initAttributes(context, attrs, 0);
+        initAttributes(context, attrs, 0, 0);
     }
 
 	public CheckBox(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
-        initAttributes(context, attrs, defStyle);
+        initAttributes(context, attrs, defStyle, 0);
 	}
 
-    private void initAttributes(Context context, AttributeSet attrs, int defStyle) {
-        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.com_neopixl_pixlui_components_checkbox_CheckBox);
-        final boolean allCaps = a.getBoolean(R.styleable.com_neopixl_pixlui_components_checkbox_CheckBox_android_textAllCaps, false);
-        a.recycle();
-
-        setAllCaps(allCaps);
-        setCustomFont(context, attrs, defStyle);
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP) public CheckBox(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+        super(context, attrs, defStyleAttr, defStyleRes);
+        initAttributes(context, attrs, defStyleAttr, defStyleRes);
     }
 
-    private void setCustomFont(Context ctx, AttributeSet attrs, int defStyle) {
-        PixlUIUtils.setCustomFont(ctx, this,
-                R.styleable.com_neopixl_pixlui_components_textview_TextView,
-                R.styleable.com_neopixl_pixlui_components_textview_TextView_typeface,
-                attrs, defStyle);
+    private void initAttributes(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+        setAllCaps(context, attrs, defStyleAttr, defStyleRes);
+        setCustomFont(context, attrs, defStyleAttr, defStyleRes);
+    }
+
+    private void setAllCaps(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+        PixlUIUtils.setAllCaps(context, this,
+                R.styleable.com_neopixl_pixlui_components_checkbox_CheckBox,
+                R.styleable.com_neopixl_pixlui_components_checkbox_CheckBox_android_textAllCaps,
+                attrs, defStyleAttr, defStyleRes);
+    }
+
+    private void setCustomFont(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+        PixlUIUtils.setCustomFont(context, this,
+                R.styleable.com_neopixl_pixlui_components_checkbox_CheckBox,
+                R.styleable.com_neopixl_pixlui_components_checkbox_CheckBox_typeface,
+                attrs, defStyleAttr, defStyleRes);
     }
 
 	/**

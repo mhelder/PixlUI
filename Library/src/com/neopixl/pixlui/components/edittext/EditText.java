@@ -1,7 +1,9 @@
 package com.neopixl.pixlui.components.edittext;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.util.AttributeSet;
 
 import com.neopixl.pixlui.R;
@@ -13,23 +15,33 @@ public class EditText extends android.widget.EditText implements FontStyleView {
 
 	public EditText(Context context) {
         super(context);
+        initAttributes(context, null, 0, 0);
 	}
 
 	public EditText(Context context, AttributeSet attrs) {
 		super(context, attrs);
-        setCustomFont(context, attrs, 0);
+        initAttributes(context, attrs, 0, 0);
 	}
 
 	public EditText(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
-		setCustomFont(context, attrs, defStyle);
+        initAttributes(context, attrs, defStyle, 0);
 	}
 
-	private void setCustomFont(Context ctx, AttributeSet attrs, int defStyle) {
-        PixlUIUtils.setCustomFont(ctx, this,
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP) public EditText(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+        super(context, attrs, defStyleAttr, defStyleRes);
+        initAttributes(context, attrs, defStyleAttr, defStyleRes);
+    }
+
+    private void initAttributes(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+        setCustomFont(context, attrs, defStyleAttr, defStyleRes);
+    }
+
+	private void setCustomFont(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+        PixlUIUtils.setCustomFont(context, this,
                 R.styleable.com_neopixl_pixlui_components_edittext_EditText,
                 R.styleable.com_neopixl_pixlui_components_edittext_EditText_typeface,
-                attrs, defStyle);
+                attrs, defStyleAttr, defStyleRes);
 	}
 
 	/**
