@@ -15,4 +15,8 @@
         <attr name="typeface" />
     </declare-styleable>
 
+     <declare-styleable name="com.neopixl.pixlui.components.edittext.AutoCompleteEditText">
+        <attr name="typeface" />
+    </declare-styleable>
+
 </resources>

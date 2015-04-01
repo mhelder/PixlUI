@@ -48,21 +48,23 @@ import android.view.inputmethod.InputMethodInfo;
 import android.view.inputmethod.InputMethodManager;
 
 import com.android.export.AllCapsTransformationMethod;
+import com.neopixl.pixlui.R;
 import com.neopixl.pixlui.components.textview.FontFactory;
 import com.neopixl.pixlui.intern.CustomPasswordTransformationMethod;
+import com.neopixl.pixlui.intern.FontStyleView;
 import com.neopixl.pixlui.intern.PixlUIContants;
+import com.neopixl.pixlui.intern.PixlUIUtils;
 
 /**
  * Provide more possibility with EditText and enable new methods on old api
  * 
  * @author Olivier Demolliens. @odemolliens Dev with Neopixl
  */
-public class AutoCompleteEditText extends android.widget.AutoCompleteTextView {
+public class AutoCompleteEditText extends android.widget.AutoCompleteTextView implements FontStyleView {
 
 	/**
 	 * XML Attribute
 	 */
-	private static final String EDITTEXT_ATTRIBUTE_FONT_NAME = "typeface";
 	private static final String EDITTEXT_ATTRIBUTE_COPY_AND_PASTE = "copyandpaste";
 	private static final String EDITTEXT_ATTRIBUTE_CANCEL_CLIPBOARD_CONTENT = "clearclipboardcontent";
 	private static final String EDITTEXT_ATTRIBUTE_AUTO_FOCUS = "autofocus";
@@ -111,7 +113,7 @@ public class AutoCompleteEditText extends android.widget.AutoCompleteTextView {
 	public AutoCompleteEditText(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		editTextVersion();
-		setCustomFont(context, attrs);
+        setCustomFont(context, attrs, 0);
 		setDisableCopyAndPaste(context, attrs);
 		setCancelClipboard(context, attrs);
 		setAutoFocus(context,attrs);
@@ -123,7 +125,7 @@ public class AutoCompleteEditText extends android.widget.AutoCompleteTextView {
 	public AutoCompleteEditText(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 		editTextVersion();
-		setCustomFont(context, attrs);
+        setCustomFont(context, attrs, defStyle);
 		setDisableCopyAndPaste(context, attrs);
 		setCancelClipboard(context, attrs);
 		setAutoFocus(context,attrs);
@@ -157,22 +159,12 @@ public class AutoCompleteEditText extends android.widget.AutoCompleteTextView {
 		mCustomPassWordTransformation = false;
 	}
 
-	/**
-	 * XML methods
-	 * 
-	 * @param ctx
-	 * @param attrs
-	 */
-	private void setCustomFont(Context ctx, AttributeSet attrs) {
-		String typefaceName = attrs.getAttributeValue(
-				PixlUIContants.SCHEMA_URL, EDITTEXT_ATTRIBUTE_FONT_NAME);
-
-		if (typefaceName != null) {
-			setPaintFlags(this.getPaintFlags() | Paint.SUBPIXEL_TEXT_FLAG
-					| Paint.LINEAR_TEXT_FLAG);
-			setCustomFont(ctx, typefaceName);
-		}
-	}
+    private void setCustomFont(Context ctx, AttributeSet attrs, int defStyle) {
+        PixlUIUtils.setCustomFont(ctx, this,
+                R.styleable.com_neopixl_pixlui_components_edittext_AutoCompleteEditText,
+                R.styleable.com_neopixl_pixlui_components_edittext_AutoCompleteEditText_typeface,
+                attrs, defStyle);
+    }
 
 	/**
 	 * XML methods
