@@ -1,7 +1,7 @@
 apply plugin: 'com.android.library'
 android {
-    compileSdkVersion 19
-    buildToolsVersion = rootProject.ext.buildToolsVersion
+    compileSdkVersion 21
+    buildToolsVersion = '21.1.2'
     sourceSets {
         main {
             manifest.srcFile 'AndroidManifest.xml'
