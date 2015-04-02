@@ -78,6 +78,9 @@ public class RelativeLayout extends android.widget.RelativeLayout implements Alp
     @Override public void setAlpha(float alpha) {
         if (android.os.Build.VERSION.SDK_INT < 11) {
             mAlpha = alpha;
+            // view groups don't draw by default, so let's enable it on older devices if a translucent value is set
+            // the super implementation already correctly handles this scenario
+            setWillNotDraw(mAlpha == 1);
         } else {
             super.setAlpha(alpha);
         }
